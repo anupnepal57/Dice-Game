@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo List</title>
+</head>
+<body>
+        <div>
+                <button>add task</button>
+            </div>
+            <div id="addtodo"></div>
+    <script>
+    class Task{
+        constructor(task,date = Date()){
+           this.task = task ;
+           this.date =date ;
+        }
+    }
+    class list{
+        constructor(){
+            this.taskSubject=[];
+            if(localStorage.getItem('item')){
+            this.taskSubject = JSON.parse(localStorage.getItem('item'));
+        }
+        }
+        addTask(task){
+            var ToDo = new Task(task)
+            this.taskSubject.push(ToDo);
+            localStorage.setItem('item',JSON.stringify(this.taskSubject))
+            return this;
+        }
+        removeTask(position){
+            this.taskSubject.splice(position,1);
+            localStorage.setItem('item',JSON.stringify(this.taskSubject));
+            return this;
+        }
+        show(){
+            for(var i = 0 ;i<this.taskSubject.length;i++){
+        console.log('taskSubject',this.taskSubject)
+            var div = document.createElement('div'); 
+            var element = document.createElement('p');
+            var button = document.createElement('button');
+            button.setAttribute('onclick', `deleteItem(${i})`)
+            button.innerText = 'Remove';
+            console.log('task',this.taskSubject[i].task);
+            element.innerText = this.taskSubject[i].task;
+            div.appendChild(element);
+            div.appendChild(button);
+            document.getElementById('addtodo').appendChild(div);
+            // document.getElementsByTagName('input')[0].value = ''; 
+        }
+        return this
+            
+        }
+    }
+    var item =new list() ;
+    document.querySelector('button').addEventListener('click',function(){
+    var task = prompt('add todo');
+    // console.log('c',task);
+    item.addTask(task);
+    document.getElementById('addtodo').innerHTML = '';
+    item.show();
+})
+
+var deleteItem = (x)=>{
+    item.removeTask(x);
+    document.getElementById('addtodo').innerHTML = '';
+    item.show();
+}
+
+window.onload = ()=>{
+   item.show();
+}
+        
+    </script>
+    
+
+
+</body>
+</html>
